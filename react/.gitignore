@@ -1,0 +1,7 @@
+coverage/
+dist/
+node_modules/
+
+#SonarQube
+test-report.xml
+/.scannerwork

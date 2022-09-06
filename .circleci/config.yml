@@ -4,6 +4,7 @@ jobs:
   test:
     docker:
       - image: cimg/node:16.17
+    working_directory: ~/react
     steps:
       - checkout
       - restore_cache:
@@ -20,16 +21,22 @@ jobs:
           name: Run Tests
           command: npm run test
   build:
+    docker:
+      - image: cimg/node:16.17
+    working_directory: ~/react
     steps:
-      -run:
-        name: 'Build'
-        command: npm run build
+      - run:
+          name: 'Build'
+          command: npm run build
 
 workflows:
+  version: 2
   main:
     jobs:
       - test
-      - build
-        filters:
-          branches:
-            only: master
+      - build:
+          requires:
+            - test
+          filters:
+            branches:
+              only: master

@@ -21,15 +21,18 @@ jobs:
           command: npm run test
   build:
     steps:
-      -run:
+      - run:
         name: 'Build'
         command: npm run build
 
 workflows:
+  version: 2
   main:
     jobs:
       - test
       - build:
+        requires:
+            - test
         filters:
           branches:
             only: master

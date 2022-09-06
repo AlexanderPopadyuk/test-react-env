@@ -4,9 +4,10 @@ jobs:
   test:
     docker:
       - image: cimg/node:16.17
-    working_directory: ~/react
+    working_directory: ~/test-react-env/react
     steps:
-      - checkout
+      - checkout:
+          path: ~/test-react-env
       - restore_cache:
           keys:
             - node-deps-{{checksum "package-lock.json"}}
@@ -23,7 +24,7 @@ jobs:
   build:
     docker:
       - image: cimg/node:16.17
-    working_directory: ~/react
+    working_directory: ~/test-react-env/react
     steps:
       - run:
           name: 'Build'

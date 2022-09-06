@@ -21,11 +21,17 @@ jobs:
       - run:
           name: Run Tests
           command: npm run test
+      - persist_to_workspace:
+          root: ~/test-react-env
+          paths:
+            - .
   build:
     docker:
       - image: cimg/node:16.17
     working_directory: ~/test-react-env/react
     steps:
+      - attach_workspace:
+          at: ~/test-react-env
       - run:
           name: 'Build'
           command: npm run build

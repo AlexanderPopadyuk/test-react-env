@@ -1,5 +1,8 @@
 version: 2.1
 
+orbs:
+  aws-s3: circleci/aws-s3@3.0.0
+
 jobs:
   test:
     docker:
@@ -22,7 +25,7 @@ jobs:
           name: Run Tests
           command: npm run test
       - persist_to_workspace:
-          root: ~/test-react-env
+          root: ~/test-react-env/react
           paths:
             - .
   build:
@@ -31,11 +34,25 @@ jobs:
     working_directory: ~/test-react-env/react
     steps:
       - attach_workspace:
-          at: ~/test-react-env
+          at: ~/test-react-env/react
       - run:
           name: 'Build'
           command: npm run build
-
+      - persist_to_workspace:
+          root: ~/test-react-env/react/dist
+          paths:
+            - .
+  deploy:
+    docker:
+      - image: 'cimg/python:3.6'
+    working_directory: ~/test-react-env/react
+    steps:
+      - attach_workspace:
+          at: ~/test-react-env/react/dist
+      - aws-s3/copy:
+          arguments: '--dryrun'
+          from: ~/test-react-env/react/dist
+          to: 's3://test-react-env-123'
 workflows:
   version: 2
   main:
@@ -44,6 +61,12 @@ workflows:
       - build:
           requires:
             - test
+          filters:
+            branches:
+              only: master
+      - deploy:
+          requires:
+            - build
           filters:
             branches:
               only: master

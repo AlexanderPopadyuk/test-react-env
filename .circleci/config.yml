@@ -38,23 +38,17 @@ jobs:
       - run:
           name: 'Build'
           command: npm run build
-      - run:
-          name: Browse
-          command: ls ./*/*/*
       - persist_to_workspace:
-          root: ~/test-react-env/react/dist
+          root: ~/test-react-env/react
           paths:
-            - .
+            - dist
   deploy:
     docker:
       - image: 'cimg/python:3.6'
     working_directory: ~/test-react-env
     steps:
       - attach_workspace:
-          at: ~/test-react-env/react/dist
-      - run:
-          name: 'Browse'
-          command: ls ./*/*/*/
+          at: ~/test-react-env/react
       - aws-s3/sync:
           arguments: |
             --acl public-read \

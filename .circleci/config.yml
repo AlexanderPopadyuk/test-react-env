@@ -45,6 +45,9 @@ jobs:
     steps:
       - attach_workspace:
           at: ~/test-react-env/react
+      - run:
+          name: 'Browse'
+          command: ls ./*/*/*/
       - aws-s3/sync:
           arguments: |
             --acl public-read \

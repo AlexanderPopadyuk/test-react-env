@@ -38,17 +38,20 @@ jobs:
       - run:
           name: 'Build'
           command: npm run build
+      - run:
+          name: Browse
+          command: ls ./*/*/*
       - persist_to_workspace:
-          root: ~/test-react-env/react
+          root: ~/test-react-env/react/dist
           paths:
-            - dist
+            - .
   deploy:
     docker:
       - image: 'cimg/python:3.6'
     working_directory: ~/test-react-env
     steps:
       - attach_workspace:
-          at: ~/test-react-env/react
+          at: ~/test-react-env/react/dist
       - run:
           name: 'Browse'
           command: ls ./*/*/*/

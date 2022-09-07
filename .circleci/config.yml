@@ -38,17 +38,13 @@ jobs:
       - run:
           name: 'Build'
           command: npm run build
-      - persist_to_workspace:
-          root: ~/test-react-env/react/dist
-          paths:
-            - .
   deploy:
     docker:
       - image: 'cimg/python:3.6'
-    working_directory: ~/test-react-env/react
+    working_directory: ~/test-react-env
     steps:
       - attach_workspace:
-          at: ~/test-react-env/react/dist
+          at: ~/test-react-env/react
       - aws-s3/sync:
           arguments: |
             --acl public-read \
@@ -69,6 +65,3 @@ workflows:
       - deploy:
           requires:
             - build
-          filters:
-            branches:
-              only: master

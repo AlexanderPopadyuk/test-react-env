@@ -4,7 +4,7 @@ import { App } from './App';
 
 test('<App /> renders', () => {
   const { getByText } = render(<App />);
-  const element = getByText(/React APP/i);
+  const element = getByText(/React APP  test/i);
 
   expect(element).toBeInTheDocument();
 });

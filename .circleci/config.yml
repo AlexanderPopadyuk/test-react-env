@@ -54,7 +54,7 @@ jobs:
             --acl public-read \
             --cache-control "max-age=86400"
           from: ~/test-react-env/react/dist
-          to: 's3://testreactenv123'
+          to: 's3://testreactapp123'
 workflows:
   version: 2
   main:
